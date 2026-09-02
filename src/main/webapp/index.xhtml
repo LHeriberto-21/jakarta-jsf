@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/layouts/main.xhtml">
+
+
+    <ui:define name="content">
+
+        <p:card>
+
+            <f:facet name="title">
+                <h:outputText value="#{title}"/>
+            </f:facet>
+
+            <p:divider/>
+
+            <h:form id="createForm">
+                <p:commandButton value="#{msg['navbar.text.create']}" action="form.xhtml" class="p-my-2"/>
+            </h:form>
+
+            <h:outputText value="#{msg['product.noExist']}" rendered="#{empty productController.listed}"
+                          class="alert alert-warning"/>
+
+            <p:divider/>
+
+            <h:form>
+                <div class="field grid p-my-2">
+                    <label for="searchText" class="p-col-fixed" style="width:100px;">Buscar</label>
+                    <div class="p-col">
+                        <p:inputText id="searchText" value="#{productController.search}"
+                                     placeholder="#{msg['product.search']}">
+                            <p:ajax event="keyup" update="show table" listener="#{productController.search}"/>
+                        </p:inputText>
+                    </div>
+
+                    <div class="p-col">
+                        <h:outputText value="#{productController.search}" id="show"/>
+                    </div>
+                </div>
+            </h:form>
+
+            <p:divider/>
+
+            <p:dataTable id="table"
+                         value="#{productController.listed}" var="prod"
+                         rendered="#{not empty productController.listed}" style="max-width:65%;"
+                         rows="5" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                         {LastPageLink} {RowsPerPageDropDown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} record"
+                         rowPerPageTemplate="5, 10, {ShowAll | 'All'}"
+            >
+                <p:column headerText="#{msg['product.id']}">
+                    <h:outputText value="#{prod.id}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['product.name']}">
+                    <h:outputText value="#{prod.name}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['product.price']}">
+                    <h:outputText value="#{prod.price}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['product.sku']}">
+                    <h:outputText value="#{prod.sku}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['product.registerDate']}">
+                    <h:outputText value="#{prod.registerDate}">
+                        <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg['product.category']}">
+                    <h:outputText value="#{prod.category.name}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['product.button.edit']}">
+                    <h:form id="editForm">
+                        <p:commandButton value="#{msg['product.button.edit']}"
+                                         action="#{productController.edit(prod.id)}"
+                                         class="ui-button-success"/>
+                    </h:form>
+                </p:column>
+
+                <p:column headerText="#{msg['product.button.edit']} 2">
+                    <h:form id="editForm2">
+                        <p:linkButton value="#{msg['product.button.edit']} 2" outcome="form"
+                                      class="btn btn-sm btn-info">
+                            <f:param name="id" value="#{prod.id}"/>
+                        </p:linkButton>
+                    </h:form>
+                </p:column>
+
+                <p:column headerText="#{msg['product.button.delete']}">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['product.button.delete']}"/>
+                    </f:facet>
+                    <h:form id="deleteForm">
+                        <p:commandButton value="#{msg['product.button.delete']}"
+                                         action="#{productController.delete(prod)}"
+                                         class="ui-button-danger"
+                                         onclick="return confirm('Estas seguro que deseas eliminar?')" update="table"/>
+                    </h:form>
+                </p:column>
+
+            </p:dataTable>
+        </p:card>
+    </ui:define>
+</ui:composition>
