@@ -1,27 +1,15 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="primefaces"
-                template="WEB-INF/layouts/main.xhtml">
-<!--                xmlns:p="http://primefaces.org/ui"-->
+                xmlns:p="primefaces">
 
-    <ui:define name="content">
-
-        <f:metadata>
-            <f:viewParam name="id" value="#{productController.id}"/>
-        </f:metadata>
-
-        <p:panel header="#{product.id > 0 ? msg['product.button.edit']: msg['product.button.create']} producto">
-
-            <p:linkButton outcome="index" value="#{msg['product.button.back']}" class="p-my-2"/>
-
-            <h:form>
+            <h:form id="formProduct">
 
                 <div class="field grid">
                     <p:outputLabel value="#{msg['product.name']}" for="name" class="p-col-fixed" style="width:200px;"/>
                     <div class="p-col">
-                        <p:inputText id="name" value="#{product.name}"
+                        <p:inputText id="name" value="#{productController.product.name}"
                                      label="#{msg['product.name']}"/>
                     </div>
                     <div class="p-col">
@@ -36,7 +24,7 @@
                     <p:outputLabel value="#{msg['product.price']}" for="price" class="p-col-fixed"
                                    style="width:200px;"/>
                     <div class="p-col">
-                        <p:inputText id="price" value="#{product.price}"
+                        <p:inputText id="price" value="#{productController.product.price}"
                                      label="#{msg['product.price']}: " type="number"/>
                     </div>
                     <div class="p-col">
@@ -48,7 +36,7 @@
                 <div class="field grid">
                     <p:outputLabel value="#{msg['product.sku']}" for="sku" class="p-col-fixed" style="width:200px;"/>
                     <div class="p-col">
-                        <p:inputText id="sku" value="#{product.sku}"
+                        <p:inputText id="sku" value="#{productController.product.sku}"
                                      label="#{msg['product.sku']}: "/>
                     </div>
                     <div class="p-col">
@@ -61,7 +49,7 @@
                     <p:outputLabel value="#{msg['product.registerDate']}" for="registerDate" class="p-col-fixed"
                                    style="width:200px;"/>
                     <div class="p-col">
-                        <p:datePicker pattern="yyyy-MM-dd" id="registerDate" value="#{product.registerDate}"
+                        <p:datePicker pattern="yyyy-MM-dd" id="registerDate" value="#{productController.product.registerDate}"
                                       label="#{msg['product.registerDate']}: "
                                       converterMessage="Indique una fecha valida: (yyyy-MM-dd)">
 
@@ -78,7 +66,7 @@
                     <p:outputLabel value="#{msg['product.category']}" for="category" class="p-col-fixed"
                                    style="width:200px;"/>
                     <div class="p-col">
-                        <p:selectOneMenu id="category" value="#{product.category}">
+                        <p:selectOneMenu id="category" value="#{productController.product.category}">
                             <f:selectItem itemLabel="---- Seleccione una categoría ----" itemValue="#{null}"/>
                             <f:selectItems value="#{categories}" var="cat" itemLabel="#{cat.name}"/>
 
@@ -93,14 +81,14 @@
                 <div class="field grid">
                     <div class="p-col">
                         <p:commandButton
-                                value="#{product.id > 0 ? msg['product.button.edit']: msg['product.button.create']}"
+                                value="#{productController.product.id > 0 ? msg['product.button.edit']: msg['product.button.create']}"
                                 action="#{productController.save}"
 
-                                class="ui-button-outlined ui-button-sucess" update="@form"/>
-                        <h:inputHidden value="#{product.id}"/>
+                                class="ui-button-outlined ui-button-sucess" update="@form table"/>
+                        <h:inputHidden value="#{productController.product.id}"/>
                     </div>
                 </div>
             </h:form>
-        </p:panel>
-    </ui:define>
-</ui:composition>
+
+
+</ui:component>
