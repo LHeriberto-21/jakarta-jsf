@@ -4,7 +4,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="primefaces">
 
-            <h:form id="formProduct">
+            <h:form id="formProduct" rendered="#{p:ifGranted('ADMIN')}">
 
                 <div class="field grid">
                     <p:outputLabel value="#{msg['product.name']}" for="name" class="p-col-fixed" style="width:200px;"/>

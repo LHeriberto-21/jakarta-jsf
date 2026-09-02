@@ -16,7 +16,7 @@
 
             <p:divider/>
 
-            <h:form id="createForm">
+            <h:form id="createForm" rendered="#{not empty p:userPrincipal()}">
                 <p:commandButton value="#{msg['navbar.text.create']}" onclick="PF('dialogForm').show()"
                                  class="p-my-2"
                                  icon="pi pi-plus-circle">
@@ -29,7 +29,7 @@
 
             <p:divider/>
 
-            <h:form>
+            <h:form rendered="#{p:ifAnyGranted('USER, ADMIN')}">
                 <div class="field grid p-my-2">
                     <label for="searchText" class="p-col-fixed" style="width:100px;">Buscar</label>
                     <div class="p-col">
@@ -82,7 +82,7 @@
                     <h:outputText value="#{prod.category.name}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['product.button.edit']}">
+                <p:column headerText="#{msg['product.button.edit']}" rendered="#{p:ifGranted('ADMIN')}">
                     <h:form id="editForm">
                         <p:commandButton value="#{msg['product.button.edit']}"
                                          action="#{productController.edit(prod.id)}"
@@ -93,7 +93,7 @@
                     </h:form>
                 </p:column>
 
-                <p:column headerText="#{msg['product.button.delete']}">
+                <p:column headerText="#{msg['product.button.delete']}" rendered="#{p:ifGranted('ADMIN')}">
                     <f:facet name="header">
                         <h:outputText value="#{msg['product.button.delete']}"/>
                     </f:facet>
@@ -101,17 +101,19 @@
                         <p:commandButton value="#{msg['product.button.delete']}"
                                          action="#{productController.delete(prod)}"
                                          class="ui-button-danger"
-                                         onclick="return confirm('Estas seguro que deseas eliminar?')" update="table" icon="pi pi-trash"/>
+                                         onclick="return confirm('Estas seguro que deseas eliminar?')" update="table"
+                                         icon="pi pi-trash"/>
                     </h:form>
                 </p:column>
 
             </p:dataTable>
-                <p:dialog header="#{productController.product.id > 0 ? msg['product.button.edit']: msg['product.button.create']} producto"
-                          widgetVar="dialogForm" minHeight="200" minWidth="500" showEffect="fade" modal="true">
-                    <p:ajax event="close" listener="#{productController.closeDialog}" update="formProduct"/>
-                    <ui:include src="form.xhtml" />
+            <p:dialog widgetVar="dialogForm" minHeight="200" minWidth="500" showEffect="fade" modal="true"
+                      rendered="#{p:ifGranted('ADMIN')}"
+                      header="#{productController.product.id > 0 ? msg['product.button.edit']: msg['product.button.create']} producto">
+                <p:ajax event="close" listener="#{productController.closeDialog}" update="formProduct"/>
+                <ui:include src="form.xhtml"/>
 
-                </p:dialog>
+            </p:dialog>
         </p:card>
     </ui:define>
 </ui:composition>

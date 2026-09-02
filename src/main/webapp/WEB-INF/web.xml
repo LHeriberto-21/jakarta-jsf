@@ -22,4 +22,34 @@
 <!--        tiene que ser la misma extension de url-pattern-->
         <welcome-file>/index.jsf</welcome-file>
     </welcome-file-list>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>ApplicationRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.jsf</form-login-page>
+            <form-error-page>/loginError.jsf</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>webapp-jsf-jaas</web-resource-name>
+            <url-pattern>*.jsf</url-pattern>
+
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>USER</role-name>
+            <role-name>ADMIN</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>allowed resources</web-resource-name>
+            <url-pattern>/jakarta.faces.resources/*</url-pattern>
+            <url-pattern>/index.jsf/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
 </web-app>
