@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/layouts/main.xhtml">
+
+
+    <ui:define name="content">
+        <p:panel header="Error login">
+            <p:staticMessage severity="error" summary="ERROR" detail="Incorrect username and password" />
+            <p:linkButton outcome="login" value="Login" styleClass="p-my-2" />
+        </p:panel>
+    </ui:define>
+</ui:composition>
